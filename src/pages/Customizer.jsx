@@ -8,7 +8,7 @@ import { DecalTypes, EditorTabs, FilterTabs } from "../config/constants";
 import { downloadCanvasToImage, reader } from "../config/helpers";
 
 import state from "../store";
-import { download } from "../assets";
+import { download, logoShirt, stylishShirt } from "../assets";
 
 import {
   AIPicker,
@@ -20,6 +20,31 @@ import {
 
 const Customizer = () => {
   const snap = useSnapshot(state);
+
+  const [file, setFile] = useState("");
+  const [prompt, setPrompt] = useState("");
+  const [generatingImg, setGeneratingImg] = useState(false);
+
+  const [activeEditorTab, setActiveEditorTab] = useState("");
+  const [activeFilterTab, setActiveFilterTab] = useState({
+    logoShirt: true,
+    stylishShirt: false,
+  });
+
+  // show tab content depending on active tab
+  const generateTabContent = () => {
+    switch (activeEditorTab) {
+      case "colorpicker":
+        return <ColorPicker />;
+      case "filepicker":
+        return <FilePicker />;
+      case "aipicker":
+        return <AIPicker />;
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -33,8 +58,13 @@ const Customizer = () => {
             <div className="flex items-center min-h-screen">
               <div className="editortabs-container tab">
                 {EditorTabs.map((tab) => (
-                  <Tab key={tab.name} tab={tab} handelClick={() => {}} />
+                  <Tab
+                    key={tab.name}
+                    tab={tab}
+                    handelClick={() => setActiveEditorTab(tab.name)}
+                  />
                 ))}
+                {generateTabContent()}
               </div>
             </div>
           </motion.div>
