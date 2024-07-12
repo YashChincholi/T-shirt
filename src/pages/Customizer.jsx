@@ -37,7 +37,7 @@ const Customizer = () => {
       case "colorpicker":
         return <ColorPicker />;
       case "filepicker":
-        return <FilePicker />;
+        return <FilePicker file={file} setFile={setFile} />;
       case "aipicker":
         return <AIPicker />;
 
@@ -46,6 +46,7 @@ const Customizer = () => {
     }
   };
 
+  
   return (
     <AnimatePresence>
       {!snap.intro && (
