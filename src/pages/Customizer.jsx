@@ -37,7 +37,7 @@ const Customizer = () => {
       case "colorpicker":
         return <ColorPicker />;
       case "filepicker":
-        return <FilePicker file={file} setFile={setFile} />;
+        return <FilePicker file={file} setFile={setFile} readFile={readFile} />;
       case "aipicker":
         return <AIPicker />;
 
@@ -46,7 +46,40 @@ const Customizer = () => {
     }
   };
 
-  
+  const handelActiveFilterTypes = (tabName) => {
+    switch (tabName) {
+      case "logoShirt":
+        state.isLogoTexture = !activeFilterTab[tabName];
+        break;
+
+      case "stylishShirt":
+        state.isFullTexture = !activeFilterTab[tabName];
+        break;
+
+      default:
+        state.isLogoTexture = true;
+        state.isFullTexture = false;
+        break;
+    }
+  };
+
+  const handelDecals = (type, result) => {
+    const decalTypes = DecalTypes[type];
+
+    state[decalTypes.stateProperty] = result;
+
+    if (!activeFilterTab[decalTypes.filterTab]) {
+      handelActiveFilterTypes(decalTypes.filterTab);
+    }
+  };
+
+  const readFile = (type) => {
+    reader(file).then((result) => {
+      handelDecals(type, result);
+      setActiveFilterTab("");
+    });
+  };
+
   return (
     <AnimatePresence>
       {!snap.intro && (
