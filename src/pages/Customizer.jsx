@@ -50,7 +50,6 @@ const Customizer = () => {
         return null;
     }
   };
-
   const handleSubmit = async (type) => {
     if (!prompt) return alert("Please enter a prompt");
 
@@ -69,7 +68,11 @@ const Customizer = () => {
 
       const data = await response.json();
 
-      handleDecals(type, `data:image/png;base64,${data.photo}`);
+      if (data.photo) {
+        handleDecals(type, `data:image/png;base64,${data.photo}`);
+      } else {
+        alert("Failed to generate image");
+      }
     } catch (error) {
       alert(error);
     } finally {
@@ -101,7 +104,6 @@ const Customizer = () => {
         state.isFullTexture = false;
         break;
     }
-
 
     setActiveFilterTab((prevState) => {
       return {
